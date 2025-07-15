@@ -1,4 +1,4 @@
-# Offline SOP Markdown Viewer
+# xPs Markdown Viewer
 
 An offline-friendly HTML-based viewer for rendering `.md` (Markdown) files directly in your browser—no internet
 connection required after initial setup. Designed to read local SOPs, documentation, or notes in a clean, readable
