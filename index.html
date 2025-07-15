@@ -25,6 +25,9 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+            max-width: 100%;
+            overflow-wrap: anywhere;
         }
 
         h1 {
@@ -49,15 +52,20 @@
         }
 
         #output pre {
-            background: #eee;
+            background: #222;
+            color: #f8f8f8;
             padding: 1em;
             overflow: auto;
             border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         #output code {
             font-family: monospace;
-            background: #eee;
+            background: #333;
+            color: #f8f8f8;
             padding: 0.2em 0.4em;
             border-radius: 3px;
         }
@@ -77,16 +85,64 @@
                 left: 0;
                 top: 0;
                 width: 100%;
+                max-width: 100%;
+                overflow-wrap: anywhere;
+                word-wrap: break-word;
+                border: none !important;
             }
+
+            #output pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            body, #output {
+                background: white !important;
+                color: black !important;
+                box-shadow: none !important;
+            }
+
+            body.dark, body.dark * {
+                background: white !important;
+                color: black !important;
+                box-shadow: none !important;
+            }
+
+            #output pre, #output code {
+                background: #f0f0f0 !important;
+                color: black !important;
+                box-shadow: none !important;
+            }
+
+            #output th {
+                background: #e0e0e0 !important;
+            }
+
+            #output td {
+                background: white !important;
+            }
+        }
+
+        .note {
+            color: inherit;
+        }
+
+        body.dark .note {
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
-<p><strong>Note:</strong> Open this file in a browser and use the upload button below to view any Markdown file from
-    your system.</p>
+<p class="note"><strong>Note:</strong> Open this file in a browser and use the upload button below to view any Markdown
+    file from your system.</p>
 <input accept=".md" id="fileLoader" type="file"/>
 <button id="printBtn"
         style="float: right; margin-bottom: 1rem; background: none; border: none; outline: none; cursor: pointer;"> 🖨️
+</button>
+<button id="darkModeBtn"
+        style="float: right; margin-bottom: 1rem; background: none; border: none; outline: none; cursor: pointer;">
+    🌙
 </button>
 <div id="output">Please select a file to view.</div>
 
@@ -111,6 +167,77 @@
         };
         reader.readAsText(file);
     });
+</script>
+<script>
+    // Dark mode toggle logic
+    const darkModeToggle = document.getElementById('darkModeBtn');
+    const root = document.documentElement;
+    const output = document.getElementById('output');
+
+    function applyDarkMode(enable) {
+        if (enable) {
+            document.body.classList.add('dark');
+            document.body.style.backgroundColor = '#121212';
+            output.style.backgroundColor = '#1f1f1f';
+            output.style.color = '#ffffff';
+
+            document.querySelectorAll('#output *').forEach(el => {
+                el.style.color = '#ffffff';
+
+                if (el.tagName === 'PRE' || el.tagName === 'CODE') {
+                    el.style.background = '#222';
+                    el.style.color = '#f8f8f8';
+                }
+
+                if (el.tagName === 'TH') {
+                    el.style.backgroundColor = '#333';
+                }
+
+                if (el.tagName === 'TD') {
+                    el.style.backgroundColor = '#252525';
+                }
+
+                if (el.tagName === 'A') {
+                    el.style.color = '#7abaff';
+                }
+            });
+
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            document.body.classList.remove('dark');
+            document.body.style.backgroundColor = '#f4f4f4';
+            output.style.backgroundColor = 'white';
+            output.style.color = 'black';
+            document.querySelectorAll('#output *').forEach(el => {
+                el.style.color = 'black';
+                if (el.tagName === 'PRE' || el.tagName === 'CODE') {
+                    el.style.background = '#eee';
+                }
+                if (el.tagName === 'TH') {
+                    el.style.backgroundColor = '#f0f0f0';
+                }
+                if (el.tagName === 'TD') {
+                    el.style.backgroundColor = '';
+                }
+                if (el.tagName === 'A') {
+                    el.style.color = '';
+                }
+            });
+            localStorage.setItem('darkMode', 'false');
+        }
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        const current = localStorage.getItem('darkMode') === 'true';
+        applyDarkMode(!current);
+    });
+
+    window.addEventListener('load', () => {
+        const stored = localStorage.getItem('darkMode');
+        const isDark = stored === null || stored === 'true'; // default to dark
+        applyDarkMode(isDark);
+    });
+
     document.getElementById('printBtn').addEventListener('click', function () {
         window.print();
     });
