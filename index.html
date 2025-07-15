@@ -91,7 +91,10 @@
 <div id="output">Please select a file to view.</div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.13.4/mermaid.min.js"></script>
 <script>
+    mermaid.initialize({startOnLoad: true});
+
     document.getElementById('fileLoader').addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -100,7 +103,11 @@
         reader.onload = function (event) {
             const md = event.target.result;
             const html = marked.parse(md);
-            document.getElementById('output').innerHTML = html;
+            const output = document.getElementById('output');
+            output.innerHTML = html;
+            if (md.includes('```mermaid')) {
+                mermaid.init(undefined, output.querySelectorAll('.language-mermaid'));
+            }
         };
         reader.readAsText(file);
     });
