@@ -61,12 +61,33 @@
             padding: 0.2em 0.4em;
             border-radius: 3px;
         }
+
+        /* Print-specific styles: only show #output when printing */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #output, #output * {
+                visibility: visible;
+            }
+
+            #output {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 <p><strong>Note:</strong> Open this file in a browser and use the upload button below to view any Markdown file from
     your system.</p>
 <input accept=".md" id="fileLoader" type="file"/>
+<button id="printBtn"
+        style="float: right; margin-bottom: 1rem; background: none; border: none; outline: none; cursor: pointer;"> 🖨️
+</button>
 <div id="output">Please select a file to view.</div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -82,6 +103,9 @@
             document.getElementById('output').innerHTML = html;
         };
         reader.readAsText(file);
+    });
+    document.getElementById('printBtn').addEventListener('click', function () {
+        window.print();
     });
 </script>
 </body>

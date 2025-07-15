@@ -17,16 +17,16 @@ format.
 1. Clone or download this project.
 2. Open the `index.html` file in any modern browser.
 3. Click the **"Choose File"** button to load your `.md` file.
-4. The Markdown content will render instantly in the browser window.
+4. The Markdown content will instantly display in a styled format below the file picker.
 
 ## Screenshot
 
-*(Optional: Add a screenshot here showing the interface in action)*
+![img.png](img.png)
 
 ## Example Use Cases
 
-- Internal SOP documentation viewer
-- Offline Markdown reader for field agents
+- Markdown documentation viewer
+- Markdown reader for field agents
 - Secure markdown rendering for classified or sensitive documentation
 
 ## Technologies Used
