@@ -18,7 +18,7 @@
         }
 
         #output {
-            font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+            font-family: SansSerif, Arial, sans-serif;
             font-size: 0.95rem;
             line-height: 1.6;
             margin-top: 2rem;
@@ -71,8 +71,23 @@
             border-radius: 3px;
         }
 
-        /* Print-specific styles: only show #output when printing */
+        .note {
+            color: inherit;
+        }
+
+        body.dark .note {
+            color: #ffffff;
+        }
+
+        /* Print-specific styles: Optimized for A4 paper */
         @media print {
+            /* Page setup for A4 */
+            @page {
+                size: A4;
+                margin: 1.5cm 2cm 1.5cm 2cm; /* top right bottom left */
+            }
+
+            /* Hide everything except output */
             body * {
                 visibility: hidden;
             }
@@ -81,56 +96,183 @@
                 visibility: visible;
             }
 
+            /* Reset body for print */
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 12pt; /* Standard print font size */
+                line-height: 1.4;
+            }
+
+            /* Style the output container for print */
             #output {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                max-width: 100%;
-                overflow-wrap: anywhere;
-                word-wrap: break-word;
-                border: none !important;
-            }
-
-            #output pre {
-                white-space: pre-wrap;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            }
-
-            body, #output {
+                position: static !important; /* Remove absolute positioning */
+                left: auto !important;
+                top: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
                 background: white !important;
                 color: black !important;
                 box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+
+                /* Ensure proper text flow */
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                hyphens: auto;
+
+                /* Prevent content from being cut off */
+                overflow: visible !important;
+                page-break-inside: avoid;
             }
 
+            /* Fix code blocks for print */
+            #output pre {
+                background: #f8f8f8 !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+                padding: 0.5em !important;
+                margin: 0.5em 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+
+                /* Ensure code doesn't get cut off */
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                overflow: visible !important;
+                page-break-inside: avoid;
+                font-size: 10pt;
+            }
+
+            /* Fix inline code for print */
+            #output code {
+                background: #f0f0f0 !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+                padding: 0.1em 0.2em !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                font-size: 10pt;
+            }
+
+            /* Fix tables for print */
+            #output table {
+                border-collapse: collapse !important;
+                width: 100% !important;
+                margin: 0.5em 0 !important;
+                page-break-inside: avoid;
+            }
+
+            #output th {
+                background: #f0f0f0 !important;
+                color: black !important;
+                border: 1px solid #333 !important;
+                padding: 0.3em !important;
+                font-weight: bold;
+                page-break-inside: avoid;
+            }
+
+            #output td {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #333 !important;
+                padding: 0.3em !important;
+                page-break-inside: avoid;
+            }
+
+            /* Typography for print */
+            #output h1, #output h2, #output h3, #output h4, #output h5, #output h6 {
+                color: black !important;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+                margin-top: 1em;
+                margin-bottom: 0.5em;
+            }
+
+            #output h1 {
+                font-size: 18pt;
+                border-bottom: 2pt solid black;
+                padding-bottom: 0.2em;
+            }
+
+            #output h2 {
+                font-size: 16pt;
+                border-bottom: 1pt solid black;
+                padding-bottom: 0.1em;
+            }
+
+            #output h3 {
+                font-size: 14pt;
+            }
+
+            #output p {
+                color: black !important;
+                margin: 0.5em 0;
+                orphans: 3;
+                widows: 3;
+            }
+
+            #output ul, #output ol {
+                color: black !important;
+                margin: 0.5em 0;
+                padding-left: 1.5em;
+            }
+
+            #output li {
+                color: black !important;
+                margin: 0.2em 0;
+            }
+
+            #output a {
+                color: black !important;
+                text-decoration: underline;
+            }
+
+            #output blockquote {
+                color: black !important;
+                border-left: 3pt solid #666;
+                margin: 0.5em 0;
+                padding-left: 1em;
+                font-style: italic;
+            }
+
+            /* Ensure images fit on page */
+            #output img {
+                max-width: 100% !important;
+                height: auto !important;
+                page-break-inside: avoid;
+            }
+
+            /* Dark mode overrides for print */
             body.dark, body.dark * {
                 background: white !important;
                 color: black !important;
                 box-shadow: none !important;
             }
 
-            #output pre, #output code {
+            body.dark #output pre,
+            body.dark #output code {
+                background: #f8f8f8 !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+            }
+
+            body.dark #output th {
                 background: #f0f0f0 !important;
                 color: black !important;
-                box-shadow: none !important;
             }
 
-            #output th {
-                background: #e0e0e0 !important;
-            }
-
-            #output td {
+            body.dark #output td {
                 background: white !important;
+                color: black !important;
             }
-        }
-
-        .note {
-            color: inherit;
-        }
-
-        body.dark .note {
-            color: #ffffff;
         }
     </style>
 </head>
